@@ -5,9 +5,6 @@ import edu.devernul.project.model.Task;
 
 import java.util.List;
 
-/**
- * Created by JAVA LEARN on 13.02.2016.
- */
 public interface AbstractDaoTask {
     Task getById(Integer id);
 

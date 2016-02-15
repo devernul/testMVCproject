@@ -1,7 +1,6 @@
 package edu.devernul.project.dao;
 
 import edu.devernul.project.model.Status;
-import edu.devernul.project.model.Task;
 
 import java.util.List;
 

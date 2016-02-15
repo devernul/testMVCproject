@@ -20,4 +20,5 @@ public interface AbstractDaoStatus {
     Status update(Status entity);
 
     void delete(Status entity);
+    void initAction();
 }

@@ -1,10 +1,8 @@
 package edu.devernul.project.model;
 
-import javax.validation.*;
+
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.List;
 
 

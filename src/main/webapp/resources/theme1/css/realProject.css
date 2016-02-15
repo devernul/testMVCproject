@@ -1,0 +1,110 @@
+table{
+	text-align: left;
+	border-collapse: separate;
+	border: 1px solid #ddd;
+	border-spacing: 10px;
+	border-radius: 3px;
+	background: #fdfdfd;
+	font-size: 14px;
+	width: auto;
+	width: 100%;
+	padding: 0px 20px 0px 20px;
+}
+td,th{
+	border: 1px solid #ddd;
+	padding: 5px;
+	border-radius: 3px;
+	height:20px;
+	font-weight: 600;
+}
+th{
+	background: #9DA4F7;
+	text-align: center;
+	color: white;
+}
+caption{
+	font-style: italic;
+	text-align: right;
+	color: #547901;
+}
+td.noBorder,.formTable{
+	border: none;
+}
+/*For chenge status*/
+.beginHref{
+	background-color: green;
+}
+.beginHref a {
+	color: white;
+}
+.endHref{
+	background-color: red;
+}
+.endHref a {
+	color: white;
+}
+
+.listTable th,.listTable td{
+	text-align: center;
+	width: 15%;
+}
+.changeIt{
+	color: greenyellow;
+	font-size: large;
+	padding: 5px;
+}
+.deleteIt{
+	color: red;
+	font-size: large;
+	padding: 5px;
+}
+.choseLang{
+	float: right;
+	color: #A5A5A5;
+	font-size: large;
+	padding: 5px;
+}
+.pdfExp{
+	float: right;
+	margin: -70px 0px 0px 0px;
+}
+.pdfExp a{
+	color: #FDC1AA;
+}
+
+
+
+.buttonSteklo {
+	position: relative;
+	display: inline-block;
+	color: #777674;
+	font-weight: bold;
+	text-decoration: none;
+	text-shadow: rgba(255,255,255,.5) 1px 1px, rgba(100,100,100,.3) 3px 7px 3px;
+	user-select: none;
+	padding: 1em 2em;
+	outline: none;
+	border-radius: 3px / 100%;
+	background-image:
+			linear-gradient(45deg, rgba(255,255,255,.0) 30%, rgba(255,255,255,.8), rgba(255,255,255,.0) 70%),
+			linear-gradient(to right, rgba(255,255,255,1), rgba(255,255,255,0) 20%, rgba(255,255,255,0) 90%, rgba(255,255,255,.3)),
+			linear-gradient(to right, rgba(125,125,125,1), rgba(255,255,255,.9) 45%, rgba(125,125,125,.5)),
+			linear-gradient(to right, rgba(125,125,125,1), rgba(255,255,255,.9) 45%, rgba(125,125,125,.5)),
+			linear-gradient(to right, rgba(223,190,170,1), rgba(255,255,255,.9) 45%, rgba(223,190,170,.5)),
+			linear-gradient(to right, rgba(223,190,170,1), rgba(255,255,255,.9) 45%, rgba(223,190,170,.5));
+	background-repeat: no-repeat;
+	background-size: 200% 100%, auto, 100% 2px, 100% 2px, 100% 1px, 100% 1px;
+	background-position: 200% 0, 0 0, 0 0, 0 100%, 0 4px, 0 calc(100% - 4px);
+	box-shadow: rgba(0,0,0,.5) 3px 10px 10px -10px;
+	cursor: pointer;
+}
+.buttonSteklo:hover {
+	transition: .5s linear;
+	background-position: -200% 0, 0 0, 0 0, 0 100%, 0 4px, 0 calc(100% - 4px);
+}
+.buttonSteklo:active {
+	top: 1px;
+}
+
+
+

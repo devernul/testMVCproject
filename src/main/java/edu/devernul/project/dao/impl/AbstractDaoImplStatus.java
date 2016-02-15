@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.HibernateTemplate;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @Transactional
 public class AbstractDaoImplStatus implements AbstractDaoStatus {
+
     @Autowired
     private SessionFactory sessionFactory;
 
@@ -34,8 +36,6 @@ public class AbstractDaoImplStatus implements AbstractDaoStatus {
         Query q = s.createQuery("from Status s order by s.statusId");
         return q.list();
     }
-
-
 
     public Status create(Status entity) {
         Session session = this.sessionFactory.getCurrentSession();
@@ -60,5 +60,10 @@ public class AbstractDaoImplStatus implements AbstractDaoStatus {
     public void delete(Status entity) {
         Session session = this.sessionFactory.getCurrentSession();
         session.delete(entity);
+    }
+    public void initAction(){
+        create(new Status("New"));
+        create(new Status("Process"));
+        create(new Status("Complete"));
     }
 }

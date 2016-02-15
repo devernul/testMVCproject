@@ -5,12 +5,18 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<link href="<c:url value="/resources/css/realProject.css" />" rel="stylesheet">
+
+<link href="${pageContext.request.contextPath}/resources/theme1/css/realProject.css" rel="stylesheet" >
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+<script>tinymce.init({ selector:'textarea' });</script>
+
 <title><spring:message code="ToDoList"/></title>
 <table >
     <tr>
         <td align="right" colspan="4">
-            <h1 style="float:right"><span><spring:message code="ChoseLang"/>:</span>
+            <h1 class="choseLang"><span><spring:message code="ChoseLang"/>:</span>
                 <a href="?locale=en">en</a> / <a href="?locale=ru">ru</a>
             </h1>
         </td>

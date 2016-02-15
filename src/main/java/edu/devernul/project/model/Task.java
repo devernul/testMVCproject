@@ -1,12 +1,8 @@
 package edu.devernul.project.model;
 
-
-import org.hibernate.annotations.*;
-import org.hibernate.annotations.Cache;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
-import java.util.List;
 import javax.persistence.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -29,7 +25,6 @@ public class Task {
 
     @Column(name = "DESCRIPTION", nullable = false,length = 1000)
     @Size(min = 3,max =1000, message = "{description.size.error}")
-
     private String description;
 
     @Column(name = "DATE", nullable = false)

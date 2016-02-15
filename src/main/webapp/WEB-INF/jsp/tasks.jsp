@@ -1,8 +1,14 @@
 <%@ include file="header.jsp" %>
+<spring:htmlEscape defaultHtmlEscape="true" />
+
 <table>
     <tr>
         <th>
             <h1><spring:message code="TaskList"/> (${statusName.toString()})</h1>
+            <br>
+            <c:if test="${not empty countsTasks}">
+                <h2 class="pdfExp"><a href="/downloadPDF" target="_blank"><spring:message code="ExportPDF"/></a></h2>
+            </c:if>
         </th>
         <th>
             <c:if test="${not empty task.name}">
@@ -14,8 +20,8 @@
         </th>
     </tr>>
     <tr>
-        <td>
-            <table border="1">
+    <td style="width: 55%;">
+            <table border="1" class="listTable">
                 <tr>
                     <td><spring:message code="Name"/></td>
                     <td><spring:message code="Date"/></td>
@@ -30,17 +36,19 @@
                         <td><c:out value="${t.date}"/></td>
                         <td><c:out value="${t.description}"/></td>
                         <td><c:out value="${t.status.name}"/></td>
-                        <td><a href="/tasks/edit/${t.taskId}"><spring:message code="Edit"/></a>&nbsp;<a href="/tasks/delete/${t.taskId}"><spring:message code="Delete"/></a></td>
+                        <td><a class ="changeIt" href="/tasks/edit/${t.taskId}"><spring:message code="Edit"/></a>&nbsp;<a class="deleteIt" href="/tasks/delete/${t.taskId}"><spring:message code="Delete"/></a></td>
 
-
-                        <td>
                             <c:if test="${t.status.name.equals('New')}">
-                                <a href="/tasks/begin/${t.taskId}"><spring:message code="Begin"/></a>&nbsp;
+                                <td class="beginHref">
+                                        <a href="/tasks/begin/${t.taskId}"><spring:message code="Begin"/></a>&nbsp;
+                                </td>
                             </c:if>
                             <c:if test="${t.status.name.equals('Process')}">
-                                <a href="/tasks/complete/${t.taskId}"><spring:message code="Complete"/></a>
+                                <td class="endHref">
+                                        <a href="/tasks/complete/${t.taskId}"><spring:message code="Complete"/></a>
+                                </td>
                             </c:if>
-                        </td>
+
                     </tr>
                 </c:forEach>
                     <c:if test="${countsTasks>5}">
@@ -121,7 +129,7 @@
                     </tr>
                     <tr>
 
-                        <td align="right" colspan="3"><input type="submit" value='<spring:message code="Submit"/>'></td>
+                        <td align="right" colspan="3"><input type="submit" class="buttonSteklo" value='<spring:message code="Submit"/>'></td>
 
                     </tr>
 

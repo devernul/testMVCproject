@@ -1,25 +1,27 @@
 <beans:beans xmlns="http://www.springframework.org/schema/mvc"
-             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans"
-             xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:context="http://www.springframework.org/schema/context"
+             xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
              xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+
+    <aop:aspectj-autoproxy proxy-target-class="true" />
 
 
     <beans:bean name="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <beans:property name="driverClassName" value="com.mysql.jdbc.Driver"/>
         <beans:property name="url" value="jdbc:mysql://localhost:3306/test"/>
         <beans:property name="username" value="root"/>
-        <beans:property name="password" value="root"/>
+        <beans:property name="password" value="w4w3x5y7"/>
     </beans:bean>
 
     <!-- Hibernate 4 SessionFactory Bean definition -->
     <beans:bean id="hibernate4AnnotatedSessionFactory"
                 class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-
-
-
         <beans:property name="dataSource" ref="dataSource"/>
         <beans:property name="packagesToScan" value="edu.devernul.project"/>
         <beans:property name="hibernateProperties">
@@ -34,21 +36,35 @@
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
+<!--Transaction AOP-->
+
+    <tx:advice id="adviceTransaction" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="init*" propagation="REQUIRED" read-only="false"
+                       isolation="SERIALIZABLE" />
+        </tx:attributes>
+    </tx:advice>
+
+    <aop:config>
+        <aop:advisor
+                pointcut="execution(* edu.devernul.project.dao.impl.*.*(..))"
+                advice-ref="adviceTransaction" />
+    </aop:config>
+
+    <aop:config>
+        <aop:aspect id="aspectCheckTransaction" ref="checkTransaction">
+            <aop:pointcut expression="execution(* edu.devernul.project.dao.impl.*.init*(..))" id="createMethods" />
+            <aop:before pointcut-ref="createMethods" method="checkTransactionActive" />
+        </aop:aspect>
+    </aop:config>
+
+<!--Transaction AOP-->
+
+
     <beans:bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
         <beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
     </beans:bean>
 
-    <beans:bean id="statusDao" class="edu.devernul.project.dao.impl.AbstractDaoImplStatus">
-        <beans:constructor-arg>
-            <beans:value>edu.devernul.project.model.Status</beans:value>
-        </beans:constructor-arg>
-    </beans:bean>
 
-    <beans:bean id="taskDao" class="edu.devernul.project.dao.impl.AbstractDaoImplTask">
-        <beans:constructor-arg>
-            <beans:value>edu.devernul.project.model.Task</beans:value>
-        </beans:constructor-arg>
-    </beans:bean>
-    <!--Scan package for controllers -->
-    <context:component-scan base-package="edu.devernul.project"/>
+
 </beans:beans>

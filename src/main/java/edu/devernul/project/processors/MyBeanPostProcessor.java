@@ -8,14 +8,16 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class MyBeanPostProcessor implements BeanPostProcessor {
+
 	private static final Logger logger = LoggerFactory.getLogger(MyBeanPostProcessor.class);
-	@Override
+
+
 	public Object postProcessAfterInitialization(Object object, String name) throws BeansException {
 		logger.info("postProcessAfterInitialization(): {}" + object);
 		return object;
 	}
 
-	@Override
+
 	public Object postProcessBeforeInitialization(Object object, String name) throws BeansException {
 		return object;
 	}

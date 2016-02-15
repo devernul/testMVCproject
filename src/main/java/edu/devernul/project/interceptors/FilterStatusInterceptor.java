@@ -16,9 +16,8 @@ public class FilterStatusInterceptor extends HandlerInterceptorAdapter { // impl
 
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-/*		logger.debug("Test1");
-		if(request.getParameter("page_id")!=null) {
-			request.getSession().setAttribute("page_id", request.getParameter("page_id"));
-		}*/
+
+		logger.debug("Request param: {}",request.getParameterNames());
+
 	}
 }

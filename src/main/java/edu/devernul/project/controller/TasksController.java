@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 import java.beans.PropertyEditorSupport;
 import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -27,6 +28,9 @@ public class TasksController {
     private static final Logger logger = LoggerFactory.getLogger(TasksController.class);
     public static final int TASK_ON_PAGE = 5;
     public static final int INDEX_FIRST_PAGE = 1;
+    public static final String PDF_VIEW = "pdfView";
+    public static final String TASKS = "tasks";
+    public static final String REDIRECT_TASKS = "redirect:/tasks";
 
     @Autowired
     @Qualifier(value = "taskDao")
@@ -42,11 +46,10 @@ public class TasksController {
 
     @ModelAttribute("statuses")
     public List<Status> getAllProjects() {
+
         if(statusDao.findAll().isEmpty()){
 
-            statusDao.create(new Status("New"));
-            statusDao.create(new Status("Process"));
-            statusDao.create(new Status("Complete"));
+            statusDao.initAction();
 
         }
         return statusDao.findAll();
@@ -58,12 +61,20 @@ public class TasksController {
         return taskDao.findPage(0, TASK_ON_PAGE);
     }
 
+    @RequestMapping(value = "/downloadPDF", method = RequestMethod.GET)
+    public ModelAndView downloadPDF() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("tasks",taskDao.findAll());
+        modelAndView.setViewName(PDF_VIEW);
+        return modelAndView;
+    }
+
     @RequestMapping(method = RequestMethod.GET, value = "/tasks")
     public String get(Model model) {
         model.addAttribute("task", new Task());
         model.addAttribute("page_id", INDEX_FIRST_PAGE);
         model.addAttribute("countsTasks", taskDao.size());
-        return "tasks";
+        return   "tasks";
     }
     @RequestMapping(method = RequestMethod.GET, value = "/tasks/filter/{statusId}/")
     public ModelAndView get(@PathVariable String statusId,Model model) {
@@ -72,7 +83,7 @@ public class TasksController {
         modelAndView.addObject("tasks",taskDao.findAllbyStatus(status));
         modelAndView.addObject("task", new Task());
         modelAndView.addObject("statusName",status.getName());
-        modelAndView.setViewName("tasks");
+        modelAndView.setViewName(TASKS);
 
         return modelAndView;
     }
@@ -82,7 +93,7 @@ public class TasksController {
         model.addAttribute("task", new Task());
         model.addAttribute("page_id", INDEX_FIRST_PAGE);
         model.addAttribute("countsTasks", taskDao.size());
-        return "tasks";
+        return TASKS;
     }
 
 
@@ -93,23 +104,31 @@ public class TasksController {
         modelAndView.addObject("task", new Task());
         modelAndView.addObject("countsTasks", taskDao.size());
         modelAndView.addObject("page_id", pageId);
-        modelAndView.setViewName("tasks");
+        modelAndView.setViewName(TASKS);
         return modelAndView;
     }
 
 
     @RequestMapping(method = RequestMethod.POST)
     public String add( @ModelAttribute("task") @Valid Task  task, BindingResult result,Model model) {
-        //taskValidator.validate(task, result);
+/*        taskValidator.validate(task, result);
+        for(Map.Entry<String,Object> obj: model.asMap().entrySet()){
+            logger.debug("Key - {},Value - {}",obj.getKey(),obj.getValue());
+        }
+        logger.debug("Task Id {}",task.getTaskId());*/
         if (result.hasErrors()){
             model.addAttribute("countsTasks", taskDao.size());
             model.addAttribute("page_id", INDEX_FIRST_PAGE);
-            return "tasks";
+            return TASKS;
+        }else{
+            if(task.getTaskId() != null){
+                taskDao.update(task);
+            }else{
+                taskDao.create(task);
+            }
+
+            return REDIRECT_TASKS;
         }
-
-
-        taskDao.create(task);
-        return "redirect:/tasks";
     }
 
 
@@ -146,7 +165,7 @@ public class TasksController {
             model.addAttribute("statuses", statusDao.findAll());
             model.addAttribute("countsTasks", taskDao.size());
             model.addAttribute("page_id", 1);
-            return "tasks";
+            return TASKS;
         } else if (action.equalsIgnoreCase("delete")) {
             taskDao.delete(task);
         }
@@ -156,8 +175,7 @@ public class TasksController {
         else if (action.equalsIgnoreCase("complete")) {
             taskDao.updateStatus(task, (Status) statusDao.getByName("Complete"));
         }
-        logger.debug("actions   {} !!!",action);
-        return "redirect:/tasks";
+        return REDIRECT_TASKS;
     }
 
 
